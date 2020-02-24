@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>hello world</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="./template/main.css">
+        <script src="node_modules/systemjs/dist/system.js"></script>
+        <script src="node_modules/typescript/lib/typescript.js"></script>
+        <script>
+            System.config( {
+                transpiler: 'typescript',       // 使用typescript进行编译
+                packages: {
+                    './src': {
+                        defaultExtension: 'ts'  // 编译当前目录(./src)下的所有ts文件，如果不设定defaultExtension，则程序无法正确执行
+                    }
+                }
+            } );
+            System
+                .import( './src/main.ts' )                        // 入口文件
+                .then( null, console.error.bind( console ) ); // 如果有错误，转发到浏览器中的console显示错误
+        </script>
+    </head>
+
+    <body>
+        <canvas id="canvas" width="800" height="600"></canvas>
+    </body>
+
+</html>
