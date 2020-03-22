@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> 第 5 章 - Canvas2D坐标系变换 </title>
+        <!-- <link rel="stylesheet" type="text/css" media="screen" href="./template/main.css"> -->
+        <!-- <script src="system.js"></script> -->
+        <script src="node_modules/systemjs/dist/system.js"></script>
+        <script src="node_modules/typescript/lib/typescript.js"></script>
+        <style>
+            body {
+                background: #eee;
+            }
+
+            #canvas {
+                background: #cdcdcd;
+                /* margin: 0px; */
+                /* margin: 10px 15px 20px 25px; */
+                /* border-style: solid; */
+                /* border-width: 25px 35px 20px 30px; */
+                /* border-color: gray; */
+                /* padding-top: 10px; */
+                /* padding-right: 0.25em; */
+                /* padding-bottom: 2ex; */
+                /* padding-left: 100px; */
+                /* box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5); */
+            }
+        </style>
+    </head>
+
+    <body>
+        <div>
+            <button id="start"> start </button>
+            <button id="stop"> stop</button>
+        </div>
+        <canvas id="canvas" width="700" height="600"></canvas>
+    </body>
+    <script>
+        System.config( {
+            transpiler: 'typescript',
+            packages: {
+                './src': {
+                    defaultExtension: 'ts'
+                }
+            }
+        } );
+        System
+            .import( './src/TankDemo.ts' )                        // 入口文件
+            .then( null, console.error.bind( console ) ); // 如果有错误，转发到浏览器中的console显示错误
+    </script>
+
+</html>
