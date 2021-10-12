@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>第 7 章 矩阵数学及贝塞尔曲线</title>
+		<!-- <link rel="stylesheet" type="text/css" media="screen" href="./template/main.css"> -->
+		<!-- <script src="system.js"></script> -->
+		<script src="node_modules/systemjs/dist/system.js"></script>
+		<script src="node_modules/typescript/lib/typescript.js"></script>
+		<style>
+			body {
+				background: #eee;
+			}
+
+			#canvas {
+				background: #ffffff; /* 背景白色 */
+
+				-webkit-box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+				-moz-box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+				box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<button id="start">start</button>
+			<button id="stop">stop</button>
+		</div>
+		<canvas id="canvas" width="800" height="600"></canvas>
+	</body>
+	<script>
+		System.config({
+			transpiler: 'typescript',
+			packages: {
+				'./src': {
+					defaultExtension: 'ts',
+				},
+			},
+		});
+		// System.import('./src/Tank/TankDemo.ts') // 入口文件
+		System.import('./src/BezierCurve/BezierDemo.ts') // 入口文件
+			.then(null, console.error.bind(console)); // 如果有错误，转发到浏览器中的console显示错误
+	</script>
+</html>
