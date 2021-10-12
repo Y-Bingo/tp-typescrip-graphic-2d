@@ -1,9 +1,5 @@
 import { vec2 } from '../Math/vec2';
-import {
-	CanvasInputEvent,
-	CanvasMouseEvent,
-	CanvasKeyBoardEvent,
-} from './Event';
+import { CanvasKeyBoardEvent, CanvasMouseEvent } from './Event';
 
 // 回调函数别名
 export type TimerCallback = (id: number, data: any) => void;
@@ -69,12 +65,7 @@ export class Application implements EventListenerObject {
 	// 这样让内存使用量和析构达到相对平衡的状态
 	// 每次添加一个计时器，线查看timers列表中是否存在可用的timer，有的话，返回该timer的id
 	// 如果没有可用的timer，就重新new一个timer，并设置其id好及其他属性
-	public addTimer(
-		callback: TimerCallback,
-		timeout: number = 1.0,
-		onlyOnce: boolean = false,
-		data: any = undefined,
-	): number {
+	public addTimer(callback: TimerCallback, timeout: number = 1.0, onlyOnce: boolean = false, data: any = undefined): number {
 		let timer: Timer;
 		let found: boolean = false;
 		for (let i = 0; i < this.timers.length; i++) {
@@ -248,9 +239,7 @@ export class Application implements EventListenerObject {
 				let paddingTop: number = 0; // 返回 padding 相对border上偏移
 
 				// 调用getComputedStyle方法，这个方法比较有用
-				let decl: CSSStyleDeclaration = window.getComputedStyle(
-					evt.target as HTMLCanvasElement,
-				);
+				let decl: CSSStyleDeclaration = window.getComputedStyle(evt.target as HTMLCanvasElement);
 				// 需要注意，CSSStyleDeclaration中的数值都是字符串表示，而且有可能返回null
 				// 所以需要进行null值判断
 				// 并且返回的坐标都是以像素表示的，所以是整数类型
@@ -282,15 +271,8 @@ export class Application implements EventListenerObject {
 
 				// DEBUG: 使用输出相关信息
 				if (evt.type === 'mousedown') {
-					console.log(
-						' borderLeftWidth: ' +
-							borderLeftWidth +
-							' borderTopWidth : ' +
-							borderTopWidth,
-					);
-					console.log(
-						' paddingLeft :' + paddingLeft + ' paddingTop :' + paddingTop,
-					);
+					console.log(' borderLeftWidth: ' + borderLeftWidth + ' borderTopWidth : ' + borderTopWidth);
+					console.log(' paddingLeft :' + paddingLeft + ' paddingTop :' + paddingTop);
 					console.log(' 变换后的canvasPosition ：' + pos.toString());
 				}
 				return pos;
@@ -310,13 +292,7 @@ export class Application implements EventListenerObject {
 		// 将客户区的鼠标pos变换到Canvas坐标系中表示
 		let mousePosition: vec2 = this._viewportToCanvasCoordinate(event);
 		// 将 Event 一些要用到的信息传递给CanvasMouseEvent 并返回
-		let canvasMouseEvent: CanvasMouseEvent = new CanvasMouseEvent(
-			mousePosition,
-			event.button,
-			event.altKey,
-			event.ctrlKey,
-			event.shiftKey,
-		);
+		let canvasMouseEvent: CanvasMouseEvent = new CanvasMouseEvent(mousePosition, event.button, event.altKey, event.ctrlKey, event.shiftKey);
 
 		return canvasMouseEvent;
 	}
@@ -364,7 +340,7 @@ export class Application implements EventListenerObject {
 				}
 				// 同时，如果当前鼠标任意一个键处于按下状态并拖动，触发drag事件
 				if (this._isMouseDown) {
-					this.dispatchDrag(this._toCanvasMouseEvent(evt));
+					this.dispatchMouseDrag(this._toCanvasMouseEvent(evt));
 				}
 				break;
 			case 'keypress':
@@ -388,7 +364,7 @@ export class Application implements EventListenerObject {
 	// 虚方法，子类覆写（override）
 	protected dispatchMouseMove(evt: CanvasMouseEvent): void {}
 	// 虚方法，子类覆写（override）
-	protected dispatchDrag(evt: CanvasMouseEvent): void {}
+	protected dispatchMouseDrag(evt: CanvasMouseEvent): void {}
 	// 虚方法，子类覆写（override）
 	protected dispatchKeyPress(evt: CanvasKeyBoardEvent): void {}
 	// 虚方法，子类覆写（override）
