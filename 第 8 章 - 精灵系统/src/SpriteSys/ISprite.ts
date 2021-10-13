@@ -48,7 +48,7 @@ export interface IDrawable {
 	// 用户形体的绘制操作
 	draw(transformable: ITransformable, state: IRenderState, context: CanvasRenderingContext2D): void;
 	// 绘制后的操作，例如渲染状态恢复操作等
-	endDraw(transformable: ITransformable, state: IRenderState): void;
+	endDraw(transformable: ITransformable, state: IRenderState, context: CanvasRenderingContext2D): void;
 	context: CanvasRenderingContext2D;
 }
 

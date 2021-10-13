@@ -1,4 +1,4 @@
-import { mat2d } from "./matrix";
+import { mat2d, MatrixStack } from "./matrix";
 import { vec2 } from "./vec2";
 
 // 为了避免浮点数误差，使用了EPSILON进行容差处理，默认情况下为0.00001
@@ -7,6 +7,9 @@ export const EPSILON = 0.00001;
 export const PiBy180: number = 0.017453292519943295;  // Math.PI / 180
 
 export class Math2D {
+
+    public static matStack: MatrixStack = new MatrixStack();
+
     // 以角度都表示的参数转换为弧度表示
     public static toRadian( degree: number ): number {
         return degree * PiBy180;
