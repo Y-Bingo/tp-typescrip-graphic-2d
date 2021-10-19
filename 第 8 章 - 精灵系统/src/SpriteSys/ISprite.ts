@@ -113,7 +113,7 @@ export interface IDispatcher {
 	// 本接口中所有的 dispatch 开头的方法都是针对 ISpriteContainer 接口进行遍历操作
 	readonly container: ISpriteContainer;
 	// 遍历 ISpriteContainer 容器， 进行精灵的 update 分发
-	dispatchUpdate(msec: number, diffSec: number): void;
+	dispatchUpdate(msec: number, diff: number): void;
 	// 遍历 ISpriteContainer 容器， 进行精灵的 render 分发
 	dispatchDraw(context: CanvasRenderingContext2D): void;
 	// 遍历 ISpriteContainer 容器， 进行精灵的 鼠标事件 分发

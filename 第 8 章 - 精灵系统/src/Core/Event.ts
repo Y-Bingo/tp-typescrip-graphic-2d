@@ -50,13 +50,9 @@ export class CanvasMouseEvent extends CanvasInputEvent {
 	public canvasPosition: vec2;
 
 	public localPosition: vec2;
-	public constructor(
-		canvasPos: vec2,
-		button: number,
-		altKey: boolean = false,
-		ctrlKey: boolean = false,
-		shiftKey: boolean = false,
-	) {
+	public hasLocalPosition: boolean;
+
+	public constructor(canvasPos: vec2, button: number, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false) {
 		super(altKey, ctrlKey, shiftKey);
 
 		this.canvasPosition = canvasPos;
@@ -64,6 +60,7 @@ export class CanvasMouseEvent extends CanvasInputEvent {
 
 		// 暂时创建爱你一个vec对象
 		this.localPosition = vec2.create();
+		this.hasLocalPosition = false;
 	}
 }
 
@@ -75,14 +72,7 @@ export class CanvasKeyBoardEvent extends CanvasInputEvent {
 
 	// 当前按下的键是否不停的触发事件
 	public repeat: boolean;
-	public constructor(
-		key: string,
-		keyCode: number,
-		repeat: boolean,
-		altKey: boolean = false,
-		ctrlKey: boolean = false,
-		shiftKey: boolean = false,
-	) {
+	public constructor(key: string, keyCode: number, repeat: boolean, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false) {
 		super(altKey, ctrlKey, shiftKey, EInputEventType.KEYOARDEVENT);
 
 		this.key = key;
