@@ -49,7 +49,6 @@ export interface IDrawable {
 	draw(transformable: ITransformable, state: IRenderState, context: CanvasRenderingContext2D): void;
 	// 绘制后的操作，例如渲染状态恢复操作等
 	endDraw(transformable: ITransformable, state: IRenderState, context: CanvasRenderingContext2D): void;
-	context: CanvasRenderingContext2D;
 }
 
 // 用于点与 IShape 的精确碰撞检查操作
