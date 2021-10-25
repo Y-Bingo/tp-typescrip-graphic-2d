@@ -10,6 +10,14 @@ export enum ERenderType {
 	CLIP, // 裁剪模式
 }
 
+export enum EImageFillType {
+	NONE, // 没有任何效果
+	STRETCH, // 拉伸模式
+	REPEAT, // x 和 y 重复填充模式
+	REPEAT_X, // x 方向 重复填充模式
+	REPEAT_Y, // y 方向重复填充模式
+}
+
 export enum EOrder {
 	PREORDER,
 	POSTORDER,

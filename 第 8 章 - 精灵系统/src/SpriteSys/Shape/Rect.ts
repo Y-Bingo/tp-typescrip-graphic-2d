@@ -20,6 +20,14 @@ export class Rect extends BaseShape2D {
 		this.y = -this.height * v;
 	}
 
+	public get right(): number {
+		return this.x + this.width;
+	}
+
+	public get bottom(): number {
+		return this.y + this.height;
+	}
+
 	public get type(): string {
 		return 'Rect';
 	}
