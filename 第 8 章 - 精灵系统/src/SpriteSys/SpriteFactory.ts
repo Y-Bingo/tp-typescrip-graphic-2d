@@ -10,7 +10,7 @@ import { Scale9Data, Scale9Grid } from './Shape/Scale9Grid';
 import { Sprite2D } from './Sprite2D';
 
 export class SpriteFactory {
-	public static createSprite(shape: IShape, name: string): ISprite {
+	public static createSprite(shape: IShape, name: string = ''): ISprite {
 		let spr: ISprite = new Sprite2D(shape, name);
 		return spr;
 	}
