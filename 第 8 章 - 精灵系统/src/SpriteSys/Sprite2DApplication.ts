@@ -9,10 +9,13 @@ export class Sprite2DApplication extends Canvas2DApplication {
 	protected _dispatcher: IDispatcher;
 
 	public constructor(canvas: HTMLCanvasElement) {
+		document.oncontextmenu = function () {
+			return false;
+		};
 		super(canvas);
 		this._dispatcher = new Sprite2DManager();
 	}
- 
+
 	// 一个方便的只读属性，返回 ISpriteContainer 容器接口
 	// 可以通过该方法，和 ISprite 进行交互
 	public get rootContainer(): ISpriteContainer {

@@ -100,18 +100,19 @@ class ShapeDemo {
 						sprite.scaleX = Math2D.random(1, 2);
 						// 随机描边颜色
 						sprite.strokeStyle = Canvas2DUtil.Colors[Math.floor(Math2D.random(3, Canvas2DUtil.Colors.length - 1))];
-						// 随机颜色
+					} else {
 						sprite.fillStyle = Canvas2DUtil.Colors[Math.floor(Math2D.random(3, Canvas2DUtil.Colors.length - 1))];
-					}
-					// 圆圈类型，等比缩放，否则大部分情况下变椭圆
-					if (this._shapes[this._idx].type === 'Circle') {
-						let scale: number = Math2D.random(1, 3);
-						sprite.scaleX = scale;
-						sprite.scaleY = scale;
-					} else if (this._shapes[this._idx].type !== 'Scale9Grid') {
-						// 非 Scale9Grid 随机等比缩放 1 ~ 3
-						sprite.scaleX = Math2D.random(1, 3);
-						sprite.scaleY = Math2D.random(1, 3);
+						// 随机颜色
+						// 圆圈类型，等比缩放，否则大部分情况下变椭圆
+						if (this._shapes[this._idx].type === 'Circle') {
+							let scale: number = Math2D.random(1, 3);
+							sprite.scaleX = scale;
+							sprite.scaleY = scale;
+						} else if (this._shapes[this._idx].type !== 'Scale9Grid') {
+							// 非 Scale9Grid 随机等比缩放 1 ~ 3
+							sprite.scaleX = Math2D.random(1, 3);
+							sprite.scaleY = Math2D.random(1, 3);
+						}
 					}
 					// 对于精灵，挂载两个事件回调函数
 					sprite.mouseEvent = this.mouseEventHandler.bind(this);
@@ -126,7 +127,7 @@ class ShapeDemo {
 
 	private updateEventHandler(s: ISprite, msec: number, diffSec: number, order: EOrder): void {
 		// update 分发，从前到后，然后从后到前，触发两次 update 事件
-		if (EOrder.POSTORDER) {
+		if (order === EOrder.POSTORDER) {
 			return;
 		}
 		if (s.shape.type !== 'Circle' && s.shape.type !== 'Line' && s.shape.type !== 'Scale9Grid') {

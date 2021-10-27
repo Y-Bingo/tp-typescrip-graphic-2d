@@ -144,14 +144,14 @@ export class Sprite2DManager implements ISpriteContainer, IDispatcher {
 				if (evt.type === EInputEventType.MOUSEDOWN) {
 					this._dragSprite = spr;
 				}
+				if (evt.type === EInputEventType.MOUSEDRAG) {
+					return;
+				}
 				// 如果有选中的精灵，并且有事件处理程序，则立刻触发该事件处理程序
 				if (spr.mouseEvent) {
 					spr.mouseEvent(spr, evt);
 					return;
 				}
-			}
-			if (spr.mouseEvent) {
-				spr.mouseEvent(spr, evt);
 			}
 		}
 	}

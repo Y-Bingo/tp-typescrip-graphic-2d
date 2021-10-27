@@ -19,7 +19,7 @@ export abstract class BaseShape2D implements IShape {
 	public constructor() {
 		this.axisXStyle = 'rgba(255, 0, 0, 128)';
 		this.axisYStyle = 'rgba(0, 255, 0, 128)';
-		this.axisLength = 10;
+		this.axisLength = 100;
 		this.axisLineWidth = 1;
 		this.data = undefined;
 	}

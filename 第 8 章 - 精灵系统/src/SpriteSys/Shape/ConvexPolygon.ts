@@ -26,12 +26,13 @@ export class ConvexPolygon extends BaseShape2D {
 	}
 
 	public hitTest(localPt: vec2, transform: ITransformable) {
-		for (let i = 2; i < this.points.length; i++) {
-			if (Math2D.isPointInTriangle(localPt, this.points[0], this.points[1], this.points[2])) {
-				return true;
-			}
-		}
-		return false;
+		// for (let i = 2; i < this.points.length; i++) {
+		// 	if (Math2D.isPointInTriangle(localPt, this.points[0], this.points[1], this.points[2])) {
+		// 		return true;
+		// 	}
+		// }
+		// return false;
+		return Math2D.isPointInPolygon(localPt, this.points);
 	}
 
 	public draw(transformable: ITransformable, state: IRenderState, context: CanvasRenderingContext2D): void {

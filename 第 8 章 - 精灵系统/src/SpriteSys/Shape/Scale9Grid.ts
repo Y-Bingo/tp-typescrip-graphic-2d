@@ -46,7 +46,7 @@ export class Scale9Grid extends Rect {
 	public constructor(data: Scale9Data, width: number, height: number, u: number, v: number) {
 		super(width, height, u, u);
 		this.data = data;
-		this._calDestRects();
+		this._calcDestRects();
 	}
 
 	/**
@@ -55,10 +55,10 @@ export class Scale9Grid extends Rect {
 	 * 2、计算 4 条边 rectangle
 	 * 3、计算出中心 context rectangle
 	 */
-	private _calDestRects(): void {
+	private _calcDestRects(): void {
 		this.destRects = [];
 		this.srcRects = [];
-		// 左上角
+
 		let rc: Rectangle;
 		rc = new Rectangle();
 		rc.origin = vec2.create(0, 0);
@@ -70,7 +70,6 @@ export class Scale9Grid extends Rect {
 		rc.size = Size.create(this.data.leftMargin, this.data.topMargin);
 		this.destRects.push(rc);
 
-		// 右上角
 		rc = new Rectangle();
 		rc.origin = vec2.create(this.data.image.width - this.data.rightMargin, 0);
 		rc.size = Size.create(this.data.rightMargin, this.data.topMargin);
@@ -81,7 +80,6 @@ export class Scale9Grid extends Rect {
 		rc.size = Size.create(this.data.rightMargin, this.data.topMargin);
 		this.destRects.push(rc);
 
-		// 右下角
 		rc = new Rectangle();
 		rc.origin = vec2.create(this.data.image.width - this.data.rightMargin, this.data.image.height - this.data.bottomMargin);
 		rc.size = Size.create(this.data.rightMargin, this.data.bottomMargin);
@@ -92,7 +90,6 @@ export class Scale9Grid extends Rect {
 		rc.size = Size.create(this.data.rightMargin, this.data.bottomMargin);
 		this.destRects.push(rc);
 
-		// 左下角
 		rc = new Rectangle();
 		rc.origin = vec2.create(0, this.data.image.height - this.data.bottomMargin);
 		rc.size = Size.create(this.data.leftMargin, this.data.bottomMargin);
@@ -103,7 +100,6 @@ export class Scale9Grid extends Rect {
 		rc.size = Size.create(this.data.leftMargin, this.data.bottomMargin);
 		this.destRects.push(rc);
 
-		// 左边
 		rc = new Rectangle();
 		rc.origin = vec2.create(0, this.data.topMargin);
 		rc.size = Size.create(this.data.leftMargin, this.data.image.height - this.data.topMargin - this.data.bottomMargin);
@@ -114,7 +110,6 @@ export class Scale9Grid extends Rect {
 		rc.size = Size.create(this.data.leftMargin, this.height - this.data.topMargin - this.data.bottomMargin);
 		this.destRects.push(rc);
 
-		// 上边
 		rc = new Rectangle();
 		rc.origin = vec2.create(this.data.leftMargin, 0);
 		rc.size = Size.create(this.data.image.width - this.data.leftMargin - this.data.rightMargin, this.data.topMargin);
@@ -125,7 +120,6 @@ export class Scale9Grid extends Rect {
 		rc.size = Size.create(this.width - this.data.leftMargin - this.data.rightMargin, this.data.topMargin);
 		this.destRects.push(rc);
 
-		// 右边
 		rc = new Rectangle();
 		rc.origin = vec2.create(this.data.image.width - this.data.rightMargin, this.data.topMargin);
 		rc.size = Size.create(this.data.rightMargin, this.data.image.height - this.data.topMargin - this.data.bottomMargin);
@@ -136,7 +130,6 @@ export class Scale9Grid extends Rect {
 		rc.size = Size.create(this.data.rightMargin, this.height - this.data.topMargin - this.data.bottomMargin);
 		this.destRects.push(rc);
 
-		// 下边
 		rc = new Rectangle();
 		rc.origin = vec2.create(this.data.leftMargin, this.data.image.height - this.data.bottomMargin);
 		rc.size = Size.create(this.data.image.width - this.data.leftMargin - this.data.rightMargin, this.data.bottomMargin);
@@ -147,7 +140,6 @@ export class Scale9Grid extends Rect {
 		rc.size = Size.create(this.width - this.data.leftMargin - this.data.rightMargin, this.data.bottomMargin);
 		this.destRects.push(rc);
 
-		// 中间
 		rc = new Rectangle();
 		rc.origin = vec2.create(this.data.leftMargin, this.data.topMargin);
 		rc.size = Size.create(

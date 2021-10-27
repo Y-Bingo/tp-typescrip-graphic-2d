@@ -22,7 +22,7 @@ export class Size {
 	}
 
 	public static create(w: number = 1, h: number = 1): Size {
-		return new Size();
+		return new Size(w, h);
 	}
 }
 
@@ -55,6 +55,7 @@ export class Rectangle {
  */
 export class Inset {
 	public values: Float32Array;
+
 	public constructor(l: number = 0, t: number = 0, r: number = 0, b: number = 0) {
 		this.values = new Float32Array([l, t, r, b]);
 	}
@@ -89,9 +90,5 @@ export class Inset {
 
 	public set bottomMargin(value: number) {
 		this.values[3] = value;
-	}
-
-	public static create(l: number = 0, r: number = 0, t: number = 0, b: number = 0): Inset {
-		return new Inset(l, r, t, b);
 	}
 }

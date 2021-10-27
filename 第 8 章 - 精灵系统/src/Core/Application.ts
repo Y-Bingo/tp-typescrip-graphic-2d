@@ -1,5 +1,5 @@
 import { vec2 } from '../Math/vec2';
-import { CanvasKeyBoardEvent, CanvasMouseEvent } from './Event';
+import { CanvasKeyBoardEvent, CanvasMouseEvent, EInputEventType } from './Event';
 
 // 回调函数别名
 export type TimerCallback = (id: number, data: any) => void;
@@ -156,9 +156,9 @@ export class Application implements EventListenerObject {
 			this._lastTime = -1;
 			this._startTime = -1;
 			// 启动循环更新渲染
-			this._requestId = requestAnimationFrame((elapsedMsec: number): void => {
+			this._requestId = requestAnimationFrame((msec: number): void => {
 				// 启动step方法
-				this.step(elapsedMsec);
+				this.step(msec);
 			});
 		}
 	}
@@ -207,7 +207,9 @@ export class Application implements EventListenerObject {
 		// 后渲染
 		this.render();
 		// 递归调用，形成周而复始地循环操作
-		this._requestId = requestAnimationFrame(this.step.bind(this));
+		requestAnimationFrame((msec: number): void => {
+			this.step(msec);
+		});
 	}
 
 	// 虚方法，子类覆写（override）
@@ -227,8 +229,8 @@ export class Application implements EventListenerObject {
 			// 作为测试，每次mousedown时，打印出当前canvas的boundClinetRect的位置和尺寸
 			// 同时打印出MouseEvent的clientX / clientY属性
 			if (evt.type === 'mousedown') {
-				console.log('boundingClientRect : ' + JSON.stringify(rect));
-				console.log('clientX: ' + evt.clientX + ' clientY : ' + evt.clientY);
+				// console.log('boundingClientRect : ' + JSON.stringify(rect));
+				// console.log('clientX: ' + evt.clientX + ' clientY : ' + evt.clientY);
 			}
 
 			// 获取触发鼠标事件的target元素，这里总是HTMLCanvasElement
@@ -271,9 +273,9 @@ export class Application implements EventListenerObject {
 
 				// DEBUG: 使用输出相关信息
 				if (evt.type === 'mousedown') {
-					console.log(' borderLeftWidth: ' + borderLeftWidth + ' borderTopWidth : ' + borderTopWidth);
-					console.log(' paddingLeft :' + paddingLeft + ' paddingTop :' + paddingTop);
-					console.log(' 变换后的canvasPosition ：' + pos.toString());
+					// console.log(' borderLeftWidth: ' + borderLeftWidth + ' borderTopWidth : ' + borderTopWidth);
+					// console.log(' paddingLeft :' + paddingLeft + ' paddingTop :' + paddingTop);
+					// console.log(' 变换后的canvasPosition ：' + pos.toString());
 				}
 				return pos;
 			}
@@ -286,23 +288,23 @@ export class Application implements EventListenerObject {
 	}
 
 	// 将 DOM Event 对象的信息转换为自己定义的CanvasMouseEvent事件
-	private _toCanvasMouseEvent(evt: Event): CanvasMouseEvent {
+	private _toCanvasMouseEvent(evt: Event, type: EInputEventType): CanvasMouseEvent {
 		// 向下转型，将Event转换为MouseEvent
 		let event: MouseEvent = evt as MouseEvent;
 		// 将客户区的鼠标pos变换到Canvas坐标系中表示
 		let mousePosition: vec2 = this._viewportToCanvasCoordinate(event);
 		// 将 Event 一些要用到的信息传递给CanvasMouseEvent 并返回
-		let canvasMouseEvent: CanvasMouseEvent = new CanvasMouseEvent(mousePosition, event.button, event.altKey, event.ctrlKey, event.shiftKey);
-
+		let canvasMouseEvent: CanvasMouseEvent = new CanvasMouseEvent(type, mousePosition, event.button, event.altKey, event.ctrlKey, event.shiftKey);
 		return canvasMouseEvent;
 	}
 
 	// 将 DOM Event 对象的信息转换为自己定义的 keyboard事件
-	private _toCanvasKeyboardEvent(evt: Event): CanvasKeyBoardEvent {
+	private _toCanvasKeyboardEvent(evt: Event, type: EInputEventType): CanvasKeyBoardEvent {
 		// 向下转型，将Event转换为MouseEvent
 		let event: KeyboardEvent = evt as KeyboardEvent;
 		// 将 Event 一些要用到的信息传递给CanvasMouseEvent 并返回
 		let canvasKeyboardEvent: CanvasKeyBoardEvent = new CanvasKeyBoardEvent(
+			type,
 			event.key,
 			event.keyCode,
 			event.repeat,
@@ -310,7 +312,6 @@ export class Application implements EventListenerObject {
 			event.ctrlKey,
 			event.shiftKey,
 		);
-
 		return canvasKeyboardEvent;
 	}
 
@@ -327,30 +328,30 @@ export class Application implements EventListenerObject {
 		switch (evt.type) {
 			case 'mousedown':
 				this._isMouseDown = true;
-				this.dispatchMouseDown(this._toCanvasMouseEvent(evt));
+				this.dispatchMouseDown(this._toCanvasMouseEvent(evt, EInputEventType.MOUSEDOWN));
 				break;
 			case 'mouseup':
 				this._isMouseDown = false;
-				this.dispatchMouseUp(this._toCanvasMouseEvent(evt));
+				this.dispatchMouseUp(this._toCanvasMouseEvent(evt, EInputEventType.MOUSEUP));
 				break;
 			case 'mousemove':
 				// 如果 isSupportMouseMove为true，则每次鼠标移动会触发mouseMove事件
 				if (this.isSupportMouseMove) {
-					this.dispatchMouseMove(this._toCanvasMouseEvent(evt));
+					this.dispatchMouseMove(this._toCanvasMouseEvent(evt, EInputEventType.MOUSEMOVE));
 				}
 				// 同时，如果当前鼠标任意一个键处于按下状态并拖动，触发drag事件
 				if (this._isMouseDown) {
-					this.dispatchMouseDrag(this._toCanvasMouseEvent(evt));
+					this.dispatchMouseDrag(this._toCanvasMouseEvent(evt, EInputEventType.MOUSEDRAG));
 				}
 				break;
 			case 'keypress':
-				this.dispatchKeyPress(this._toCanvasKeyboardEvent(evt));
+				this.dispatchKeyPress(this._toCanvasKeyboardEvent(evt, EInputEventType.KEYPRESS));
 				break;
 			case 'keydown':
-				this.dispatchKeyDown(this._toCanvasKeyboardEvent(evt));
+				this.dispatchKeyDown(this._toCanvasKeyboardEvent(evt, EInputEventType.KEYDOWN));
 				break;
 			case 'keyup':
-				this.dispatchKeyUp(this._toCanvasKeyboardEvent(evt));
+				this.dispatchKeyUp(this._toCanvasKeyboardEvent(evt, EInputEventType.KEYUP));
 				break;
 			default:
 				break;

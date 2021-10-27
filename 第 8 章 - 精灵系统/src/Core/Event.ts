@@ -29,12 +29,7 @@ export class CanvasInputEvent {
 	public type: EInputEventType;
 
 	// 构造函数，使用了default参数，初始化时3个组合键都是false状态
-	public constructor(
-		altKey: boolean = false,
-		ctrlKey: boolean = false,
-		shiftKey: boolean = false,
-		type: EInputEventType = EInputEventType.MOUSEEVENT,
-	) {
+	public constructor(type: EInputEventType, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false) {
 		this.altKey = altKey;
 		this.ctrlKey = ctrlKey;
 		this.shiftKey = shiftKey;
@@ -52,8 +47,15 @@ export class CanvasMouseEvent extends CanvasInputEvent {
 	public localPosition: vec2;
 	public hasLocalPosition: boolean;
 
-	public constructor(canvasPos: vec2, button: number, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false) {
-		super(altKey, ctrlKey, shiftKey);
+	public constructor(
+		type: EInputEventType,
+		canvasPos: vec2,
+		button: number,
+		altKey: boolean = false,
+		ctrlKey: boolean = false,
+		shiftKey: boolean = false,
+	) {
+		super(type, altKey, ctrlKey, shiftKey);
 
 		this.canvasPosition = canvasPos;
 		this.button = button;
@@ -72,8 +74,16 @@ export class CanvasKeyBoardEvent extends CanvasInputEvent {
 
 	// 当前按下的键是否不停的触发事件
 	public repeat: boolean;
-	public constructor(key: string, keyCode: number, repeat: boolean, altKey: boolean = false, ctrlKey: boolean = false, shiftKey: boolean = false) {
-		super(altKey, ctrlKey, shiftKey, EInputEventType.KEYOARDEVENT);
+	public constructor(
+		type: EInputEventType,
+		key: string,
+		keyCode: number,
+		repeat: boolean,
+		altKey: boolean = false,
+		ctrlKey: boolean = false,
+		shiftKey: boolean = false,
+	) {
+		super(type, altKey, ctrlKey, shiftKey);
 
 		this.key = key;
 		this.keyCode = keyCode;
