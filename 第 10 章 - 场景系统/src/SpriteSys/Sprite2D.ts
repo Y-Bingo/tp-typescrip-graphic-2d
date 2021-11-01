@@ -11,7 +11,9 @@ import {
     RenderEventHandler,
     UpdateEventHandler
 } from './ISprite';
+import { SpriteNode } from './SpriteNode';
 import { Transform2D } from './Transform2D';
+import { TreeNode } from './TreeNode';
 
 // 实现 ISprite
 export class Sprite2D implements ISprite {
@@ -81,7 +83,30 @@ export class Sprite2D implements ISprite {
 	}
 
 	public getWorldMatrix(): mat2d {
-		return this.transform.toMatrix();
+		// 使用 js  instance 操作符，能判断 this.owner 是不是 SpriteNode 类的对象
+		// 如果是，则获得当前精灵的根节点精灵合成的局部-全局变换矩阵
+		if (this.owner instanceof SpriteNode) {
+			let arr: TreeNode<ISprite>[] = [];
+			let cur: TreeNode<ISprite> | undefined = this.owner as SpriteNode;
+			while (cur !== undefined) {
+				arr.push(cur);
+				cur = cur.parent;
+			}
+			let out: mat2d = mat2d.create();
+			let currMat: mat2d;
+			for (let i: number = arr.length - 1; i >= 0; i--) {
+				cur = arr[i];
+				if (cur.data) {
+					// transform2D 类并没有公开接口给 ISprite 接口，因此需要证明
+					// as 关键词惊醒向下转型操作
+					currMat = (cur.data as Sprite2D).transform.toMatrix();
+					mat2d.multiply(out, currMat, out);
+				}
+			}
+			return out;
+		} else {
+			return this.transform.toMatrix();
+		}
 	}
 
 	public getLocalMatrix(): mat2d {

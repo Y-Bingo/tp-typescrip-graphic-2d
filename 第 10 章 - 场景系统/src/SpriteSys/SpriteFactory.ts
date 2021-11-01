@@ -28,7 +28,7 @@ export class SpriteFactory {
 		return new Line(len, t);
 	}
 
-	public static create9Grid(w: number, h: number, xStep: number = 10, yStep: number = 10): IShape {
+	public static createGrid(w: number, h: number, xStep: number = 10, yStep: number = 10): IShape {
 		return new Grid(w, h, xStep, yStep);
 	}
 

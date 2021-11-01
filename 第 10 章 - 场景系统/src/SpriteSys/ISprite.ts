@@ -111,6 +111,9 @@ export interface ISpriteContainer {
 	getSprite(idx: number): ISprite;
 	// 获取容器中精灵的数量
 	getSpriteCount(): number;
+	// 获取当前精灵容器的父精灵
+	getParentSprite?(): ISprite | undefined;
+	readonly sprite?: ISprite | undefined;
 }
 
 // 进行事件、更新、绘制命令的分发接口
@@ -120,7 +123,7 @@ export interface IDispatcher {
 	// 本接口中所有的 dispatch 开头的方法都是针对 ISpriteContainer 接口进行遍历操作
 	readonly container: ISpriteContainer;
 	// 遍历 ISpriteContainer 容器， 进行精灵的 update 分发
-	dispatchUpdate(msec: number, diff: number): void;
+	dispatchUpdate(msec: number, diffSec: number): void;
 	// 遍历 ISpriteContainer 容器， 进行精灵的 render 分发
 	dispatchDraw(context: CanvasRenderingContext2D): void;
 	// 遍历 ISpriteContainer 容器， 进行精灵的 鼠标事件 分发

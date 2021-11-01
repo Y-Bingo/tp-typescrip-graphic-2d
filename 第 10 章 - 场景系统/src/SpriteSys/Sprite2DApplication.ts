@@ -1,19 +1,24 @@
 import { Canvas2DApplication } from '../Core/Canvas2DApplication';
 import { CanvasKeyBoardEvent, CanvasMouseEvent } from '../Core/Event';
 import { IDispatcher, ISpriteContainer } from './ISprite';
-import { Sprite2DManager } from './Sprite2DSystem';
+import { Sprite2DManager } from './Sprite2DManager';
+import { SpriteNodeManager } from './SpriteNodeManager';
 
 export class Sprite2DApplication extends Canvas2DApplication {
 	// 声明一个受保护的类型为 IDispatch 的成员变量
 	// 下面所有的虚方法都委托调用 IDispatcher 相关的方法
 	protected _dispatcher: IDispatcher;
 
-	public constructor(canvas: HTMLCanvasElement) {
+	public constructor(canvas: HTMLCanvasElement, isHierarchical: boolean = true) {
 		document.oncontextmenu = function () {
 			return false;
 		};
 		super(canvas);
-		this._dispatcher = new Sprite2DManager();
+		if (isHierarchical) {
+			this._dispatcher = new SpriteNodeManager(canvas.width, canvas.height);
+		} else {
+			this._dispatcher = new Sprite2DManager();
+		}
 	}
 
 	// 一个方便的只读属性，返回 ISpriteContainer 容器接口

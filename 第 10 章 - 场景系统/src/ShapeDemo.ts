@@ -67,7 +67,7 @@ class ShapeDemo {
 	// 创建 gride 及初始化
 	private _createSprites(): void {
 		// 创建与画布想听尺寸的grid 形体和精灵
-		let grid: IShape = SpriteFactory.create9Grid(this._app.canvas.width, this._app.canvas.height);
+		let grid: IShape = SpriteFactory.createGrid(this._app.canvas.width, this._app.canvas.height);
 		let gridSprite: ISprite = SpriteFactory.createSprite(grid, 'gird');
 		// 白色填充，黑色网格线
 		gridSprite.fillStyle = 'white';
@@ -163,6 +163,6 @@ class ShapeDemo {
 
 let canvas: HTMLCanvasElement | null = document.getElementById('canvas') as HTMLCanvasElement;
 
-let app: Sprite2DApplication = new Sprite2DApplication(canvas);
+let app: Sprite2DApplication = new Sprite2DApplication(canvas, true);
 
 new ShapeDemo(app);
