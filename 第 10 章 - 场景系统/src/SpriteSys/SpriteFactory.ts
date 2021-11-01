@@ -1,4 +1,5 @@
 import { vec2 } from '../Math/vec2';
+import { Bone } from '../Skeleton/Bone';
 import { IShape, ISprite } from './ISprite';
 import { Circle } from './Shape/Circle';
 import { ConvexPolygon } from './Shape/ConvexPolygon';
@@ -53,5 +54,27 @@ export class SpriteFactory {
 
 	public static createScale9Grid(data: Scale9Data, width: number, height: number, u: number = 0, v: number = 0): IShape {
 		return new Scale9Grid(data, width, height, u, v);
+	}
+
+	public static createBone(len: number = 10, t: number = 0): IShape {
+		return new Bone(len, t);
+	}
+
+	public static createISprite(
+		shape: IShape,
+		x: number = 0,
+		y: number = 0,
+		rotation: number = 0,
+		scaleX: number = 1.0,
+		scaleY: number = 1.0,
+		name: string = ' ',
+	): ISprite {
+		let spr: ISprite = new Sprite2D(shape, name);
+		spr.x = x;
+		spr.y = y;
+		spr.rotation = rotation;
+		spr.scaleX = scaleX;
+		spr.scaleY = scaleY;
+		return spr;
 	}
 }
