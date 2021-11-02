@@ -1,6 +1,6 @@
 import { vec2 } from '../Math/vec2';
-import { Bone } from '../Skeleton/Bone';
 import { IShape, ISprite } from './ISprite';
+import { Bone } from './Shape/Bone';
 import { Circle } from './Shape/Circle';
 import { ConvexPolygon } from './Shape/ConvexPolygon';
 import { Ellipse } from './Shape/Ellipse';

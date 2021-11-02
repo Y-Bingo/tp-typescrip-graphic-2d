@@ -1,6 +1,6 @@
-import { mat2d } from '../Math/matrix';
-import { IRenderState, ITransformable } from '../SpriteSys/ISprite';
-import { Line } from '../SpriteSys/Shape/Line';
+import { mat2d } from '../../Math/matrix';
+import { IRenderState, ITransformable } from '../ISprite';
+import { Line } from './Line';
 
 export class Bone extends Line {
 	/** @override */
