@@ -1,3 +1,4 @@
+import { CanvasKeyBoardEvent, CanvasMouseEvent, EInputEventType } from './Core/Event';
 import { IShape, ISprite, ISpriteContainer } from './SpriteSys/ISprite';
 import { Sprite2DApplication } from './SpriteSys/Sprite2DApplication';
 import { SpriteFactory } from './SpriteSys/SpriteFactory';
@@ -22,6 +23,11 @@ class SkeletonPersonTest {
 		// 创建朝向 x 轴，长度为 boneLen 个单位的 Bone 形体实例
 		this._bone = SpriteFactory.createBone(this._boneLen, 0);
 		this.createSkeleton();
+
+		if (this._app.rootContainer.sprite !== undefined) {
+			this._app.rootContainer.sprite.mouseEvent = this.mouseEvent.bind(this);
+			this._app.rootContainer.sprite.keyEvent = this.keyEvent.bind(this);
+		}
 		this._app.start();
 	}
 
@@ -33,6 +39,7 @@ class SkeletonPersonTest {
 		spr.scaleX = scale;
 		spr.rotation = rotation;
 		spr.name = name;
+		spr.mouseEvent = this.mouseEvent.bind(this);
 
 		parent.addSprite(spr);
 		return spr;
@@ -74,6 +81,46 @@ class SkeletonPersonTest {
 		// 右脚
 		spr = this._createSkeletonSprite(this._hand_foot_Scale, -70, spr.owner);
 		spr.x = this._boneLen;
+	}
+
+	private mouseEvent(spr: ISprite, evt: CanvasMouseEvent): void {
+		if (evt.button === 0) {
+			if (evt.type === EInputEventType.MOUSEDOWN) {
+				if (spr === this._app.rootContainer.sprite) {
+					if (this._hittedBoneSprite !== null) {
+						this._hittedBoneSprite.strokeStyle = 'red';
+						this._hittedBoneSprite.lineWidth = 2;
+					}
+				} else if (this._hittedBoneSprite !== spr) {
+					if (this._hittedBoneSprite !== null) {
+						this._hittedBoneSprite.strokeStyle = 'red';
+						this._hittedBoneSprite.lineWidth = 2;
+					}
+					this._hittedBoneSprite = spr;
+					this._hittedBoneSprite.strokeStyle = 'green';
+					this._hittedBoneSprite.lineWidth = 4;
+				}
+			} else if (evt.type === EInputEventType.MOUSEDRAG) {
+				if (spr === this._skeletonPerson) {
+					spr.x = evt.canvasPosition.x;
+					spr.y = evt.canvasPosition.y;
+				}
+			}
+		}
+	}
+
+	private keyEvent(spr: ISprite, evt: CanvasKeyBoardEvent) {
+		if (this._hittedBoneSprite === null) {
+			return;
+		}
+
+		if (evt.type === EInputEventType.KEYPRESS) {
+			if (evt.key === 'f') {
+				this._hittedBoneSprite.rotation += 1;
+			} else if (evt.key === 'b') {
+				this._hittedBoneSprite.rotation -= 1;
+			}
+		}
 	}
 }
 
