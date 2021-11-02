@@ -23,6 +23,10 @@ export class mat2d {
 		return vec2.create(this.values[2], this.values[3]);
 	}
 
+	public get origin(): vec2 {
+		return vec2.create(this.values[4], this.values[5]);
+	}
+
 	/**
 	 * 矩阵乘法
 	 *
@@ -295,5 +299,3 @@ export class MatrixStack {
 		return ret;
 	}
 }
-
-
