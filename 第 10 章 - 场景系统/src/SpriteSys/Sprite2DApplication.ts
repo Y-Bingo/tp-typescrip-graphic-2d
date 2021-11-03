@@ -66,7 +66,7 @@ export class Sprite2DApplication extends Canvas2DApplication {
 		this._dispatcher.dispatchKeyEvent(evt);
 	}
 
-	protected dispatchKeyUP(evt: CanvasKeyBoardEvent): void {
+	protected dispatchKeyUp(evt: CanvasKeyBoardEvent): void {
 		super.dispatchKeyUp(evt);
 		this._dispatcher.dispatchKeyEvent(evt);
 	}

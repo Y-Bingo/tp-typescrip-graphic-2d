@@ -1,4 +1,5 @@
 import { vec2 } from '../Math/vec2';
+import { BezierPath } from './BezierPath';
 import { IShape, ISprite } from './ISprite';
 import { Bone } from './Shape/Bone';
 import { Circle } from './Shape/Circle';
@@ -76,5 +77,9 @@ export class SpriteFactory {
 		spr.scaleX = scaleX;
 		spr.scaleY = scaleY;
 		return spr;
+	}
+
+	public static createBezierPath(points: vec2[], isCubic: boolean = false): IShape {
+		return new BezierPath(points, isCubic);
 	}
 }
