@@ -1,10 +1,11 @@
 import { vec2 } from '../Math/vec2';
 import { BezierPath } from './BezierPath';
-import { IShape, ISprite } from './ISprite';
+import { ERenderType, IShape, ISprite } from './ISprite';
 import { Bone } from './Shape/Bone';
 import { Circle } from './Shape/Circle';
 import { ConvexPolygon } from './Shape/ConvexPolygon';
 import { Ellipse } from './Shape/Ellipse';
+import { EndClipShape } from './Shape/EndClipShape';
 import { Grid } from './Shape/Grid';
 import { Line } from './Shape/Line';
 import { Rect } from './Shape/Rect';
@@ -81,5 +82,13 @@ export class SpriteFactory {
 
 	public static createBezierPath(points: vec2[], isCubic: boolean = false): IShape {
 		return new BezierPath(points, isCubic);
+	}
+
+	public static endCLipShape: IShape = new EndClipShape();
+
+	public static createClipSprite(name: string = ''): ISprite {
+		let spr: ISprite = new Sprite2D(SpriteFactory.endCLipShape, name);
+		spr.renderType = ERenderType.CLIP;
+		return spr;
 	}
 }

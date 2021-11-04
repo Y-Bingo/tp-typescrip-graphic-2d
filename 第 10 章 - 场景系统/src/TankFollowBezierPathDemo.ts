@@ -116,6 +116,9 @@ class TankFollowBEzierPathDemo {
 		tank.name = 'tank';
 		this._app.rootContainer.addSprite(tank);
 
+		// tank.renderType = ERenderType.CLIP;
+		// tank.owner.addSprite(SpriteFactory.createClipSprite());
+
 		shape = SpriteFactory.createEllipse(15, 10);
 		let turret: ISprite = SpriteFactory.createSprite(shape);
 		turret.fillStyle = 'red';
