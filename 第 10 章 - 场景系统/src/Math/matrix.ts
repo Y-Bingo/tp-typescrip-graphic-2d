@@ -264,11 +264,11 @@ export class MatrixStack {
 	/**
 	 * 旋转
 	 */
-	public rotate(angle: number, isRadian: boolean = true): void {
+	public rotate(degree: number = 0, isRadian: boolean = false): void {
 		if (isRadian === false) {
-			angle = Math2D.toRadian(angle);
+			degree = Math2D.toRadian(degree);
 		}
-		let mat: mat2d = mat2d.makeRotation(angle);
+		let mat: mat2d = mat2d.makeRotation(degree);
 		this.multMatrix(mat);
 	}
 

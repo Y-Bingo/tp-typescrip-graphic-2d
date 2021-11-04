@@ -1,6 +1,7 @@
 import { CanvasKeyBoardEvent, CanvasMouseEvent, EInputEventType } from './Core/Event';
+import { Math2D } from './Math/math2D';
 import { vec2 } from './Math/vec2';
-import { ERenderType, IShape, ISprite } from './SpriteSys/ISprite';
+import { EOrder, ERenderType, IShape, ISprite } from './SpriteSys/ISprite';
 import { Sprite2DApplication } from './SpriteSys/Sprite2DApplication';
 import { SpriteFactory } from './SpriteSys/SpriteFactory';
 
@@ -127,7 +128,74 @@ class TankFollowBEzierPathDemo {
 		gun.strokeStyle = 'blue';
 		gun.lineWidth = 3;
 		gun.name = 'gun';
+		gun.renderEvent = this.renderEvent.bind(this);
+
 		turret.owner.addSprite(gun);
+
+		if (tank.owner.sprite !== undefined) {
+			tank.owner.sprite.updateEvent = this.updateEvent.bind(this);
+		}
+	}
+
+	// n 个顶点具有（n-1）/2 条曲线
+	private getCurCount(): number {
+		let n: number = this._curvePts.length;
+		if (n <= 3) {
+			throw new Error('顶点数必须要大于 3 个！');
+		}
+		return (n - 1) / 2;
+	}
+
+	private updateCurveIndex(diffSec: number) {
+		// 根据前后时间差获取 t
+		this._curveParamT += this._speed * diffSec;
+		// 如果 t >= 1.0 说明要进入下一条曲线段了
+		if (this._curveParamT >= 1.0) {
+			this._curveIndex++;
+			this._curveParamT = this._curveParamT % 1.0;
+		}
+		if (this._curveIndex >= this.getCurCount()) {
+			this._curveIndex = 0;
+		}
+	}
+
+	private updateEvent(spr: ISprite, msec: number, diffSec: number, travelOrder: EOrder): void {
+		// 在前序遍历时进行更新操作
+		if (travelOrder === EOrder.PREORDER) {
+			// 关键算法封装在 updateCurveIndex 方法中
+			this.updateCurveIndex(diffSec * 0.01);
+
+			// 二次别塞尔曲线线段索引和顶点之间的关系
+			let a0: vec2 = this._curvePts[this._curveIndex * 2];
+			let a1: vec2 = this._curvePts[this._curveIndex * 2 + 1];
+			let a2: vec2 = this._curvePts[this._curveIndex * 2 + 2];
+
+			// 将当前的 position 记录到 lastPosition
+			vec2.copy(this._position, this._lastPosition);
+			Math2D.getQuadraticBezierVector(a0, a1, a2, this._curveParamT, this._position);
+			spr.x = this._position.x;
+			spr.y = this._position.y;
+
+			// 通过坦克当前的位置和上一次的位置计算旋转角度
+			// 然后更新坦克的 rotation， 这样 坦克就能朝向 正确的沿着贝塞尔路径运行
+			spr.rotation = vec2.getOrientation(this._lastPosition, this._position, true);
+		}
+	}
+
+	private renderEvent(spr: ISprite, context: CanvasRenderingContext2D, renderOrder: EOrder): void {
+		if (renderOrder === EOrder.POSTORDER) {
+			context.save();
+			context.translate(100, 0);
+			context.beginPath();
+			context.arc(0, 0, 5, 0, Math.PI * 2);
+			context.fill();
+			context.restore();
+		} else {
+			context.save();
+			context.translate(80, 0);
+			context.fillRect(-5, -5, 10, 10);
+			context.restore();
+		}
 	}
 
 	private mouseEvent(spr: ISprite, evt: CanvasMouseEvent): void {
